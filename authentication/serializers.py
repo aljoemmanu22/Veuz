@@ -22,11 +22,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password2', 'profile')
+        fields = ('username', 'email', 'password', 'profile')
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile', {})
-        validated_data.pop('password2')  # Remove the confirm password field
         user = User.objects.create_user(**validated_data)
         Profile.objects.update_or_create(user=user, defaults=profile_data)
         return user
